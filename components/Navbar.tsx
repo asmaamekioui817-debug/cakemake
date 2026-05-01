@@ -52,15 +52,15 @@ export default function Navbar({ cartCount = 0 }: NavbarProps) {
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/')
 
   return (
-    <nav className="bg-white border-b border-rose-100 sticky top-0 z-50 shadow-sm h-28 flex items-center">
+    <nav className="bg-white border-b border-rose-100 sticky top-0 z-50 shadow-sm h-20 md:h-28 flex items-center">
       <div className="max-w-6xl mx-auto px-4 w-full">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/dashboard" className="flex items-center gap-4 group">
-            <div className="w-24 h-24 relative overflow-hidden rounded-full border-4 border-white shadow-xl transition-transform group-hover:scale-105 bg-white -mt-4">
+          <Link href="/dashboard" className="flex items-center gap-2 md:gap-4 group">
+            <div className="w-14 h-14 md:w-24 md:h-24 relative overflow-hidden rounded-full border-2 md:border-4 border-white shadow-lg transition-transform group-hover:scale-105 bg-white -mt-2 md:-mt-4">
               <img src="/logo.png" alt="حلي باش تولي" className="w-full h-full object-cover" />
             </div>
-            <span className="font-bold text-2xl text-rose-700 tracking-tighter">حلي باش تولي</span>
+            <span className="font-bold text-lg md:text-2xl text-rose-700 tracking-tighter">حلي باش تولي</span>
           </Link>
 
           {/* Desktop Nav */}

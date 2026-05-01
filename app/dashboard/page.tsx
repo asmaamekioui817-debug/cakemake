@@ -42,21 +42,21 @@ export default function DashboardPage() {
 
       <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
         {/* Welcome Banner */}
-        <div className="bg-gradient-to-l from-rose-500 to-amber-400 rounded-3xl p-6 text-white animate-slide-up shadow-lg">
-          <div className="flex items-center justify-between">
+        <div className="bg-gradient-to-l from-rose-500 to-amber-400 rounded-2xl md:rounded-3xl p-5 md:p-8 text-white animate-slide-up shadow-lg">
+          <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-rose-100 text-sm mb-1">مرحباً بك 👋</p>
-              <h1 className="text-2xl font-bold">{profile?.full_name || 'صديقنا العزيز'}</h1>
-              <p className="text-rose-100 mt-2 text-sm">اكتشف أشهى الحلويات اليوم</p>
+              <p className="text-rose-100 text-xs md:text-sm mb-1">مرحباً بك 👋</p>
+              <h1 className="text-xl md:text-3xl font-bold">{profile?.full_name || 'صديقنا العزيز'}</h1>
+              <p className="text-rose-100 mt-2 text-xs md:text-sm">اكتشف أشهى الحلويات اليوم</p>
             </div>
-            <div className="text-6xl">🍯</div>
+            <div className="text-5xl md:text-7xl opacity-80 md:opacity-100">🍯</div>
           </div>
         </div>
 
         {/* Quick Actions */}
         <div>
-          <h2 className="section-title">استكشف</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <h2 className="section-title text-lg md:text-xl">استكشف</h2>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
             {quickActions.map((action) => (
               <Link
                 key={action.href}
