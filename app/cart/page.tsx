@@ -84,7 +84,7 @@ export default function CartPage() {
       return
     }
 
-    // Insert order items
+    // Insert order items and update stock
     const items = cart.map(c => ({
       order_id: order.id,
       sweet_id: c.sweet.id,
@@ -95,7 +95,14 @@ export default function CartPage() {
 
     await supabase.from('order_items').insert(items)
 
-    // Clear cart
+    // Update stock for each item
+    for (const item of cart) {
+      const currentStock = item.sweet.stock_count || 0
+      const newStock = Math.max(0, currentStock - item.quantity)
+      await supabase.from('sweets').update({ stock_count: newStock }).eq('id', item.sweet.id)
+    }
+
+    // Clear cart and finish
     saveCart([])
     toast.success('تم إرسال طلبك بنجاح! 🎉')
     router.push('/orders')
