@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { Message, Profile } from '@/types'
 import Navbar from '@/components/Navbar'
-import { Send, MessageCircle } from 'lucide-react'
+import { Send, MessageCircle, ChevronRight, User } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 function MessagesContent() {
@@ -18,6 +18,7 @@ function MessagesContent() {
   const [messages, setMessages] = useState<Message[]>([])
   const [newMessage, setNewMessage] = useState('')
   const [loading, setLoading] = useState(true)
+  const [showListOnMobile, setShowListOnMobile] = useState(true)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -50,7 +51,10 @@ function MessagesContent() {
 
         if (makerId) {
           const maker = users?.find(u => u.id === makerId)
-          if (maker) setSelectedUser(maker)
+          if (maker) {
+            setSelectedUser(maker)
+            setShowListOnMobile(false)
+          }
         }
       }
 
@@ -107,43 +111,50 @@ function MessagesContent() {
     }
   }
 
+  const handleSelectUser = (user: Profile) => {
+    setSelectedUser(user)
+    setShowListOnMobile(false)
+  }
+
   return (
-    <div className="grid md:grid-cols-3 gap-4 h-[calc(100vh-250px)]">
+    <div className="grid md:grid-cols-3 gap-4 h-[calc(100vh-140px)] md:h-[calc(100vh-250px)]">
       {/* Conversations List */}
-      <div className="card overflow-hidden flex flex-col">
-        <div className="p-4 border-b border-rose-100">
+      <div className={`card overflow-hidden flex flex-col ${!showListOnMobile ? 'hidden md:flex' : 'flex'}`}>
+        <div className="p-4 border-b border-rose-100 bg-white">
           <p className="font-bold text-gray-700">المحادثات</p>
         </div>
-        <div className="overflow-y-auto flex-1">
+        <div className="overflow-y-auto flex-1 bg-white/50">
           {loading ? (
             <div className="p-4 space-y-3">
-              {[1, 2].map(i => (
+              {[1, 2, 3].map(i => (
                 <div key={i} className="flex items-center gap-3 animate-pulse">
-                  <div className="w-10 h-10 bg-rose-100 rounded-full" />
+                  <div className="w-12 h-12 bg-rose-100 rounded-full" />
                   <div className="h-4 bg-rose-100 rounded w-2/3" />
                 </div>
               ))}
             </div>
           ) : conversations.length === 0 ? (
-            <div className="p-6 text-center text-gray-400">
-              <MessageCircle size={32} className="mx-auto mb-2 opacity-40" />
-              <p className="text-sm">لا توجد محادثات</p>
+            <div className="p-10 text-center text-gray-400">
+              <MessageCircle size={48} className="mx-auto mb-3 opacity-20" />
+              <p className="text-sm">لا توجد محادثات بعد</p>
             </div>
           ) : (
             conversations.map(user => (
               <button
                 key={user.id}
-                onClick={() => setSelectedUser(user)}
-                className={`w-full flex items-center gap-3 p-4 hover:bg-rose-50 transition-colors text-right ${
-                  selectedUser?.id === user.id ? 'bg-rose-50 border-r-2 border-rose-400' : ''
+                onClick={() => handleSelectUser(user)}
+                className={`w-full flex items-center gap-3 p-4 hover:bg-rose-50 transition-colors text-right border-b border-rose-50/50 ${
+                  selectedUser?.id === user.id ? 'bg-rose-50 border-r-4 border-rose-500' : ''
                 }`}
               >
-                <div className="w-10 h-10 bg-gradient-to-br from-rose-300 to-amber-300 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">
+                <div className="w-12 h-12 bg-gradient-to-br from-rose-400 to-amber-300 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0 shadow-sm text-lg">
                   {user.full_name[0]}
                 </div>
                 <div className="min-w-0">
-                  <p className="font-semibold text-gray-800 truncate">{user.full_name}</p>
-                  <p className="text-xs text-gray-400">{user.role === 'maker' ? 'صانع حلوى' : user.role === 'delivery' ? 'موصّل' : 'عميل'}</p>
+                  <p className="font-bold text-gray-800 truncate">{user.full_name}</p>
+                  <p className="text-xs text-gray-500 font-medium">
+                    {user.role === 'maker' ? '👩‍🍳 صانعة حلويات' : user.role === 'delivery' ? '🚗 موصّل' : '👤 عميل'}
+                  </p>
                 </div>
               </button>
             ))
@@ -152,42 +163,58 @@ function MessagesContent() {
       </div>
 
       {/* Chat Area */}
-      <div className="md:col-span-2 card overflow-hidden flex flex-col">
+      <div className={`md:col-span-2 card overflow-hidden flex flex-col h-full ${showListOnMobile ? 'hidden md:flex' : 'flex'}`}>
         {!selectedUser ? (
-          <div className="flex-1 flex items-center justify-center text-gray-400 flex-col gap-3">
-            <MessageCircle size={48} className="opacity-30" />
-            <p className="font-semibold">اختر محادثة للبدء</p>
+          <div className="flex-1 flex items-center justify-center text-gray-400 flex-col gap-4 bg-white/50">
+            <div className="w-20 h-20 bg-rose-50 rounded-full flex items-center justify-center">
+              <MessageCircle size={40} className="text-rose-200" />
+            </div>
+            <p className="font-bold text-lg">اختر محادثة للبدء</p>
           </div>
         ) : (
           <>
             {/* Chat Header */}
-            <div className="p-4 border-b border-rose-100 flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-rose-300 to-amber-300 rounded-full flex items-center justify-center text-white font-bold">
+            <div className="p-3 md:p-4 border-b border-rose-100 flex items-center gap-3 bg-white sticky top-0 z-10">
+              <button 
+                onClick={() => setShowListOnMobile(true)}
+                className="md:hidden p-2 -mr-2 text-rose-500 hover:bg-rose-50 rounded-full transition-colors"
+              >
+                <ChevronRight size={28} />
+              </button>
+              <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-rose-400 to-amber-400 rounded-full flex items-center justify-center text-white font-bold shadow-sm">
                 {selectedUser.full_name[0]}
               </div>
-              <div>
-                <p className="font-bold text-gray-800">{selectedUser.full_name}</p>
-                <p className="text-xs text-gray-400">
-                  {selectedUser.role === 'maker' ? '👩‍🍳 صانع حلوى' : selectedUser.city || ''}
+              <div className="flex-1 min-w-0">
+                <p className="font-bold text-gray-800 text-sm md:text-base truncate">{selectedUser.full_name}</p>
+                <p className="text-[10px] md:text-xs text-green-500 font-bold flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                  متصل الآن
                 </p>
               </div>
             </div>
 
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            {/* Messages Area */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[#fdf8f8] pattern-bg-light">
+              {messages.length === 0 && (
+                <div className="text-center py-10">
+                  <div className="bg-white/80 inline-block px-4 py-2 rounded-full text-xs text-gray-400 shadow-sm">
+                    ابدأ المحادثة الآن بكلمة طيبة ✨
+                  </div>
+                </div>
+              )}
               {messages.map((msg) => {
                 const isMe = msg.sender_id === currentUser?.id
                 return (
-                  <div key={msg.id} className={`flex ${isMe ? 'justify-start' : 'justify-end'}`}>
-                    <div className={`max-w-[75%] px-4 py-2 rounded-2xl text-sm ${
+                  <div key={msg.id} className={`flex ${isMe ? 'justify-start' : 'justify-end animate-slide-up'}`}>
+                    <div className={`max-w-[85%] md:max-w-[70%] px-4 py-3 shadow-sm ${
                       isMe
-                        ? 'bg-rose-500 text-white rounded-tr-sm'
-                        : 'bg-white border border-rose-100 text-gray-700 rounded-tl-sm'
+                        ? 'bg-rose-500 text-white rounded-2xl rounded-tr-none'
+                        : 'bg-white border border-rose-100 text-gray-800 rounded-2xl rounded-tl-none'
                     }`}>
-                      <p>{msg.content}</p>
-                      <p className={`text-xs mt-1 ${isMe ? 'text-rose-200' : 'text-gray-400'}`}>
+                      <p className="text-sm md:text-base leading-relaxed whitespace-pre-wrap">{msg.content}</p>
+                      <div className={`text-[10px] mt-1.5 flex items-center ${isMe ? 'text-rose-100' : 'text-gray-400'}`}>
                         {new Date(msg.created_at).toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' })}
-                      </p>
+                      </div>
                     </div>
                   </div>
                 )
@@ -195,25 +222,35 @@ function MessagesContent() {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input */}
-            <div className="p-4 border-t border-rose-100 flex gap-3">
-              <input
-                id="message-input"
-                type="text"
-                value={newMessage}
-                onChange={e => setNewMessage(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && sendMessage()}
-                placeholder="اكتب رسالة..."
-                className="input-field flex-1"
-              />
-              <button
-                id="send-btn"
-                onClick={sendMessage}
-                disabled={!newMessage.trim()}
-                className="btn-primary px-4 py-3 disabled:opacity-60"
-              >
-                <Send size={18} />
-              </button>
+            {/* Input Area */}
+            <div className="p-3 md:p-4 border-t border-rose-100 bg-white shadow-lg">
+              <div className="flex gap-2 items-end max-w-4xl mx-auto">
+                <div className="flex-1 bg-gray-50 rounded-2xl px-4 py-1 border border-gray-100 focus-within:border-rose-300 focus-within:ring-1 focus-within:ring-rose-200 transition-all">
+                  <textarea
+                    id="message-textarea"
+                    rows={1}
+                    value={newMessage}
+                    onChange={e => setNewMessage(e.target.value)}
+                    onKeyDown={e => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault()
+                        sendMessage()
+                      }
+                    }}
+                    placeholder="اكتب رسالة..."
+                    className="w-full bg-transparent border-none focus:ring-0 py-3 text-sm md:text-base text-gray-800 resize-none max-h-32"
+                    style={{ height: 'auto' }}
+                  />
+                </div>
+                <button
+                  id="send-message-btn"
+                  onClick={sendMessage}
+                  disabled={!newMessage.trim()}
+                  className="w-12 h-12 md:w-14 md:h-14 bg-rose-500 text-white rounded-2xl flex items-center justify-center hover:bg-rose-600 disabled:opacity-40 shadow-lg shadow-rose-200 transition-all active:scale-95 flex-shrink-0"
+                >
+                  <Send size={20} className="md:size-24" />
+                </button>
+              </div>
             </div>
           </>
         )}
@@ -224,11 +261,13 @@ function MessagesContent() {
 
 export default function MessagesPage() {
   return (
-    <div className="min-h-screen bg-rose-50">
+    <div className="min-h-screen bg-rose-50 overflow-hidden">
       <Navbar />
-      <div className="max-w-5xl mx-auto px-4 py-6">
-        <h1 className="page-header mb-4">💬 الرسائل</h1>
-        <Suspense fallback={<div className="text-center py-20 text-gray-400">جارٍ تحميل المحادثات...</div>}>
+      <div className="max-w-5xl mx-auto px-0 md:px-4 py-0 md:py-6">
+        <div className="hidden md:block">
+          <h1 className="page-header mb-4">💬 الرسائل</h1>
+        </div>
+        <Suspense fallback={<div className="text-center py-20 text-gray-400 animate-pulse">جارٍ تحميل المحادثات...</div>}>
           <MessagesContent />
         </Suspense>
       </div>
