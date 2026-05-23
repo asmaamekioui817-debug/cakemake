@@ -7,7 +7,7 @@ import { Workshop } from '@/types'
 import Navbar from '@/components/Navbar'
 import { Calendar, Clock, Users, Video, ChevronLeft } from 'lucide-react'
 
-const CATEGORIES = ['الكل', 'كعك', 'حلوى مغربية', 'شوكولاتة', 'تزيين الكيك', 'أخرى']
+const CATEGORIES = ['الكل', 'كعك', 'حلوى ', 'شوكولاتة', 'تزيين الكيك', 'أخرى']
 
 export default function WorkshopsPage() {
   const [workshops, setWorkshops] = useState<Workshop[]>([])
@@ -54,11 +54,10 @@ export default function WorkshopsPage() {
             <button
               key={cat}
               onClick={() => setCategory(cat)}
-              className={`flex-shrink-0 px-4 py-2 rounded-2xl text-sm font-semibold transition-all ${
-                category === cat
+              className={`flex-shrink-0 px-4 py-2 rounded-2xl text-sm font-semibold transition-all ${category === cat
                   ? 'bg-amber-400 text-white shadow-md'
                   : 'bg-white text-gray-600 border border-rose-100 hover:border-amber-300'
-              }`}
+                }`}
             >
               {cat}
             </button>

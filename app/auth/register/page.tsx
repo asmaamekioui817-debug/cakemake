@@ -35,7 +35,7 @@ export default function RegisterPage() {
       email: formData.email,
       password: formData.password,
       options: {
-        data: { 
+        data: {
           full_name: formData.full_name,
           role: formData.role,
           phone: formData.phone,
@@ -47,7 +47,7 @@ export default function RegisterPage() {
     if (error) {
       toast.error(error.message)
     } else if (data.user) {
-      toast.success('تم إنشاء حسابك بنجاح! 🎉')
+      toast.success('تم إنشاء حسابك بنجاح!')
       router.push('/dashboard')
     }
     setLoading(false)
@@ -57,11 +57,11 @@ export default function RegisterPage() {
     <div className="min-h-screen pattern-bg flex items-center justify-center p-4">
       <div className="w-full max-w-lg">
         <div className="text-center mb-8 animate-slide-up">
-          <div className="w-28 h-28 mx-auto mb-4 relative overflow-hidden rounded-3xl shadow-xl border-4 border-white">
-            <img src="/logo.png" alt="حلي باش تولي" className="w-full h-full object-cover" />
+          <div className="w-28 h-28 mx-auto mb-4 relative overflow-hidden rounded-full shadow-xl border-4 border-white">
+            <img src="/logo.jpeg" alt="قطعة سكر" className="w-full h-full object-cover" />
           </div>
           <h1 className="text-3xl font-bold text-rose-700">إنشاء حساب</h1>
-          <p className="text-gray-500 mt-1">انضم لمجتمع حلي باش تولي</p>
+          <p className="text-gray-500 mt-1">انضم لمجتمع قطعة سكر</p>
         </div>
 
         <div className="card p-8 animate-slide-up">

@@ -25,7 +25,7 @@ export default function LoginPage() {
     if (error) {
       toast.error('خطأ في البريد أو كلمة المرور')
     } else if (data.user) {
-      toast.success('مرحباً بك مجدداً! 👋')
+      toast.success('مرحباً بك مجدداً!')
       router.push('/dashboard')
     }
     setLoading(false)
@@ -36,10 +36,10 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8 animate-slide-up">
-          <div className="w-28 h-28 mx-auto mb-4 relative overflow-hidden rounded-3xl shadow-xl border-4 border-white">
-            <img src="/logo.png" alt="حلي باش تولي" className="w-full h-full object-cover" />
+          <div className="w-28 h-28 mx-auto mb-4 relative overflow-hidden rounded-full shadow-xl border-4 border-white">
+            <img src="/logo.jpeg" alt="قطعة سكر" className="w-full h-full object-cover" />
           </div>
-          <h1 className="text-3xl font-bold text-rose-700">حلي باش تولي</h1>
+          <h1 className="text-3xl font-bold text-rose-700">قطعة سكر</h1>
           <p className="text-gray-500 mt-1">أشهى الحلويات الجزائرية بين يديك</p>
         </div>
 

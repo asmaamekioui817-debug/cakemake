@@ -25,11 +25,17 @@ body {
   min-height: 100vh;
 }
 
+/* Smooth scrolling */
+html { scroll-behavior: smooth; }
+
 /* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #f1f1f1; }
-::-webkit-scrollbar-thumb { background: #fda4af; border-radius: 3px; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #fda4af; border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: #f43f5e; }
+
+/* Better tap highlight on mobile */
+* { -webkit-tap-highlight-color: transparent; }
 
 /* Custom components */
 @layer components {
@@ -91,7 +97,12 @@ body {
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-12px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
